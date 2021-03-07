@@ -1,0 +1,13 @@
+db:
+ driver: oracle.jdbc.OracleDriver
+ password: 14292
+ url: jdbc:oracle:thin:@127.0.0.1:1521:orcl
+ username: TESTDB
+ dialect: org.hibernate.dialect.Oracle10gDialect
+ show-sql: true
+ ddl-auto: update
+ package-to-scan: com.benz.hib.jpa.api.entity
+
+
+
+

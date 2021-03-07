@@ -1,0 +1,8 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: jpa-with-hibernate
+  profiles:
+    active: db
