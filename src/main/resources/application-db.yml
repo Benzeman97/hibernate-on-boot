@@ -9,5 +9,6 @@ db:
  package-to-scan: com.benz.hib.jpa.api.entity
 
 
-
-
+spring:
+ jpa:
+  open-in-view: false
