@@ -34,7 +34,6 @@ public class StudentDaoImpl implements StudentDao {
             return Optional.of(students);
 
 
-    @Transactional
     @Override
     public Optional<List<Student>> getStudents() {
         Session session = hibernateUtil.getSession();
