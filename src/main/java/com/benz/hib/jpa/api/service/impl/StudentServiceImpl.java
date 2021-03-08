@@ -44,7 +44,9 @@ public class StudentServiceImpl implements StudentService {
         Student stu =studentDao.findStudent(stuId);
         if(Objects.isNull(stu))
             throw new DataNotFoundException(String.format("Student is not found with %d", stuId));
-        return studentDao.updateStudent(student).get();
+        stu.setStuName(student.getStuName());
+        stu.setSalary(student.getSalary());
+        return studentDao.updateStudent(stu);
     }
 
     @Override

@@ -13,10 +13,9 @@ public interface StudentDao {
 
      Student findStudent(int stuId);
 
-     @Transactional(propagation = Propagation.REQUIRED)
     Student saveStudent(Student student);
 
-    Optional<Student> updateStudent(Student student);
+    Student updateStudent(Student student);
 
     void deleteStudent(Student student);
 

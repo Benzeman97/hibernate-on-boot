@@ -20,7 +20,7 @@ public class HibernateUtil {
 
     public Session getSession()
     {
-        Session session = null;
+        Session session=null;
 
         if(thlSession.get()==null) {
             session = sessionFactory.openSession();

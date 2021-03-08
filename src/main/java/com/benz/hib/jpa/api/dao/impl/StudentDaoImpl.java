@@ -4,9 +4,10 @@ import com.benz.hib.jpa.api.dao.StudentDao;
 import com.benz.hib.jpa.api.entity.Student;
 import com.benz.hib.jpa.api.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,55 +15,93 @@ import java.util.Optional;
 @Repository
 public class StudentDaoImpl implements StudentDao {
 
-
     private HibernateUtil hibernateUtil;
-    private SessionFactory sessionFactory;
 
-    public StudentDaoImpl(HibernateUtil hibernateUtil,SessionFactory sessionFactory)
+    public StudentDaoImpl(HibernateUtil hibernateUtil)
     {
         this.hibernateUtil=hibernateUtil;
-        this.sessionFactory=sessionFactory;
     }
-
 
     @Override
     public Optional<List<Student>> getStudents() {
-        Session session = sessionFactory.getCurrentSession();
-        List<Student> students = session.createQuery("from Student").list();
-        return Optional.of(students);
+        Session session = hibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+
+        try{
+            List<Student> students = session.createQuery("from Student").list();
+            transaction.commit();
+            return Optional.of(students);
+
+        }catch (Exception ex)
+        {
+            transaction.rollback();
+            return null;
+        }
+
     }
 
     @Override
     public Student findStudent(int stuId) {
-        Session session=  sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Student s where s.stuId= :stuId");
-        query.setParameter("stuId",stuId);
-        List<Student> students  = query.list();
-          if(students.size()==0)
-              return null;
-          return students.get(0);
+        Session session = hibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            Query query = session.createQuery("from Student s where s.stuId= :stuId");
+            query.setParameter("stuId", stuId);
+            List<Student> students = query.list();
+            transaction.commit();
+            if (students.size() == 0)
+                return null;
+            return students.get(0);
+        }catch (Exception ex)
+        {
+            transaction.rollback();
+            return null;
+        }
 
     }
 
     @Override
     public Student saveStudent(Student student) {
-        Session session =  hibernateUtil.getSession();
-        session.save(student);
-        session.flush();
-        session.close();
-        return student;
+        Session session = hibernateUtil.getSession();
+        Transaction transaction= session.beginTransaction();
+        try {
+            session.save(student);
+            transaction.commit();
+            return student;
+        }catch (Exception ex)
+        {
+            transaction.rollback();
+            return null;
+        }
     }
 
     @Override
-    public Optional<Student> updateStudent(Student student) {
-        Session session=  hibernateUtil.getSession();
-        session.persist(student);
-        return Optional.of(student);
+    public Student updateStudent(Student student) {
+        Session session = hibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.saveOrUpdate(student);
+            transaction.commit();
+            return student;
+        }catch (Exception ex)
+        {
+            transaction.rollback();
+            return null;
+        }
     }
 
     @Override
     public void deleteStudent(Student student) {
-        Session session= hibernateUtil.getSession();
-        session.delete(student);
+        Session session = hibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.delete(student);
+            transaction.commit();
+        }catch (Exception ex)
+        {
+            transaction.commit();
+        }
     }
+
 }

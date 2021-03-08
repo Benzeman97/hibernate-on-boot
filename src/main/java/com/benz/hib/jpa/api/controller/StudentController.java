@@ -53,8 +53,8 @@ public class StudentController {
     @DeleteMapping("/{stuId}")
     public void delete(@PathVariable int stuId)
     {
-        if(stuId!=0)
-            studentService.deleteStudent(stuId);
-        throw new IllegalArgumentException();
+        if(stuId==0)
+          throw new IllegalArgumentException();
+        studentService.deleteStudent(stuId);
     }
 }
