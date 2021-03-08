@@ -37,7 +37,7 @@ public class StudentController {
     @PostMapping(value = "/save",produces = {MediaType.APPLICATION_JSON_VALUE},consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Student> saveStudent(@RequestBody Student student)
     {
-        if(student.getStuId()!=0 && !student.getStuName().trim().isEmpty() && student.getSalary()!=0.0)
+        if(!student.getStuName().trim().isEmpty() && student.getSalary()!=0.0)
             return new ResponseEntity<>(studentService.saveStudent(student),HttpStatus.CREATED);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

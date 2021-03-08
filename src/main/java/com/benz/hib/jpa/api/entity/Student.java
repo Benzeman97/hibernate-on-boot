@@ -4,10 +4,7 @@ import com.benz.hib.jpa.api.db.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "STUDENT",schema = Schema.TESTDB)
@@ -16,6 +13,8 @@ import javax.persistence.Table;
 public class Student {
 
     @Id
+   /* @SequenceGenerator(name = "STU_ID_GEN",sequenceName = Schema.TESTDB+".STU_ID_SEQ",initialValue = 104,allocationSize = 1)
+    @GeneratedValue(generator = "STU_ID_GEN",strategy = GenerationType.SEQUENCE)*/
     @Column(name = "STU_ID")
     private int stuId;
     @Column(name = "STU_NAME",nullable = false)

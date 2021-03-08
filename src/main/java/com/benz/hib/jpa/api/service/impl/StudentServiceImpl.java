@@ -33,10 +33,10 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     public Student saveStudent(Student student) {
 
-        Student stu =studentDao.findStudent(student.getStuId());
-        if(Objects.isNull(stu))
+        /*Student stu =studentDao.findStudent(student.getStuId());
+        if(Objects.isNull(stu))*/
           return studentDao.saveStudent(student);
-        throw new DataNotFoundException(String.format("Student is existed with %d",student.getStuId()));
+       // throw new DataNotFoundException(String.format("Student is existed with %d",student.getStuId()));
     }
 
     @Override

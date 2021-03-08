@@ -7,7 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,19 +21,6 @@ public class StudentDaoImpl implements StudentDao {
         this.hibernateUtil=hibernateUtil;
     }
 
-
-    @Override
-    public Optional<List<Student>> getStudents() {
-        Session session = hibernateUtil.getSession();
-        Transaction transaction = session.beginTransaction();
-
-        try{
-            List<Student> students = session.createQuery("from Student").list();
-            transaction.commit();
-            return Optional.of(students);
-
-
-    @Transactional
     @Override
     public Optional<List<Student>> getStudents() {
         Session session = hibernateUtil.getSession();
@@ -79,7 +65,7 @@ public class StudentDaoImpl implements StudentDao {
         Session session = hibernateUtil.getSession();
         Transaction transaction= session.beginTransaction();
         try {
-            session.save(student);
+            session.merge(student);
             transaction.commit();
             return student;
         }catch (Exception ex)
@@ -102,17 +88,6 @@ public class StudentDaoImpl implements StudentDao {
             transaction.rollback();
             return null;
         }
-
-      Transaction transaction = session.beginTransaction();
-      try {
-          session.saveOrUpdate(student);
-          transaction.commit();
-          return student;
-      }catch (Exception ex)
-      {
-          transaction.rollback();
-          return null;
-      }
 
     }
 
