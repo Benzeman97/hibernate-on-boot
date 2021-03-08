@@ -22,6 +22,7 @@ public class StudentDaoImpl implements StudentDao {
         this.hibernateUtil=hibernateUtil;
     }
 
+
     @Override
     public Optional<List<Student>> getStudents() {
         Session session = hibernateUtil.getSession();
@@ -31,6 +32,18 @@ public class StudentDaoImpl implements StudentDao {
             List<Student> students = session.createQuery("from Student").list();
             transaction.commit();
             return Optional.of(students);
+
+
+    @Transactional
+    @Override
+    public Optional<List<Student>> getStudents() {
+        Session session = hibernateUtil.getSession();
+            Transaction transaction = session.beginTransaction();
+
+         try{
+            List<Student> students = session.createQuery("from Student").list();
+            transaction.commit();
+             return Optional.of(students);
 
         }catch (Exception ex)
         {
@@ -89,6 +102,18 @@ public class StudentDaoImpl implements StudentDao {
             transaction.rollback();
             return null;
         }
+
+      Transaction transaction = session.beginTransaction();
+      try {
+          session.saveOrUpdate(student);
+          transaction.commit();
+          return student;
+      }catch (Exception ex)
+      {
+          transaction.rollback();
+          return null;
+      }
+
     }
 
     @Override
