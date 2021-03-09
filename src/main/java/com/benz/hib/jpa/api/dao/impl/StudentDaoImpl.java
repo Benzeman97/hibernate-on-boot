@@ -21,6 +21,18 @@ public class StudentDaoImpl implements StudentDao {
         this.hibernateUtil=hibernateUtil;
     }
 
+
+    @Override
+    public Optional<List<Student>> getStudents() {
+        Session session = hibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+
+        try{
+            List<Student> students = session.createQuery("from Student").list();
+            transaction.commit();
+            return Optional.of(students);
+
+
     @Override
     public Optional<List<Student>> getStudents() {
         Session session = hibernateUtil.getSession();
